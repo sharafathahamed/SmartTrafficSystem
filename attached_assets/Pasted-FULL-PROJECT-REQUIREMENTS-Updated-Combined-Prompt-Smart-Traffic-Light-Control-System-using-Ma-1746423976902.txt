@@ -1,0 +1,132 @@
+FULL PROJECT REQUIREMENTS (Updated & Combined Prompt)
+🚦 Smart Traffic Light Control System using Machine Learning and Image Processing
+
+✅ PROJECT GOALS
+Accept image and video input from 3–4 different traffic lanes.
+
+Detect vehicles (cars, bikes, buses, trucks) and emergency vehicles (ambulances) using YOLOv11 (or fallback to YOLOv8/YOLOv5 if easier).
+
+Count total vehicles and their types per lane.
+
+Calculate dynamic green signal time for each lane with priority logic:
+
+🟥 Red (0s): No traffic.
+
+🟨 15s: Low traffic (0–5 vehicles).
+
+🟧 30s: Medium traffic (6–10 vehicles).
+
+🟩 60s: High traffic (>10 vehicles or if ambulance is detected).
+
+Assign different priority-based durations per lane:
+
+Example: Lane 1 gets 60s green, Lane 2 gets 45s yellow, Lane 3 gets 30s green.
+
+❗️ No two lanes should get the same light/time at the same moment.
+
+Simulate traffic lights (RED, YELLOW, GREEN) visually per lane.
+
+Upload or select multiple images/videos at once.
+
+Display:
+
+Each uploaded file with labeled output like your reference image (bounding boxes with class & confidence).
+
+Per-lane summary: vehicle count, types detected, signal time, and current light status.
+
+Highlight ambulance detection in a noticeable way.
+
+Prevent the app from outputting raw backend errors—instead, show user-friendly analysis messages if something fails.
+
+Make the UI human-designed, colorful, interactive, and user-friendly (not AI-generic or grayscale).
+
+All vehicle types should be clearly labeled (car, bike, bus, ambulance, etc.), exactly like the uploaded image.
+
+🧱 PROJECT STRUCTURE (Modular)
+graphql
+Copy
+Edit
+SmartTrafficApp/
+│
+├── main.py                # Entry point - integrates all modules
+├── model_loader.py        # Loads YOLO model (v5/v8/v11)
+├── signal_logic.py        # Handles traffic light timing & priority logic
+├── app_ui.py              # Builds Gradio UI, handles uploads, outputs
+├── utils.py               # Helper functions for detection, preprocessing
+├── requirements.txt       # All dependencies
+├── README.md              # Project documentation
+📁 DATA LOCATIONS
+Images: C:\Users\shara\Desktop\project\images
+
+Videos: C:\Users\shara\Desktop\project\video
+
+If local paths can't be accessed in browser, allow user to upload via file upload interface.
+
+🛠️ TECH STACK
+Python 3.9+
+
+YOLOv5 / YOLOv8 / YOLOv11
+
+OpenCV (cv2)
+
+Gradio (preferred for GUI)
+
+Torch
+
+NumPy
+
+pathlib / os
+
+Optional: pillow, tqdm for image handling/progress
+
+🎨 UI REQUIREMENTS
+Colorful UI with:
+
+Traffic light simulation blocks per lane
+
+Vehicle type detection visualizations
+
+Summary box with counts & status
+
+Upload section for multiple image/video files
+
+Output section showing:
+
+Labeled image/video with detections (similar to uploaded example)
+
+Vehicle count per type
+
+Signal time and light color per lane
+
+Ambulance alert (if detected, highlight that lane in bright color and show 60s green)
+
+Error Handling: Show clear messages like "Model not loaded" or "Invalid file format", instead of raw Python errors.
+
+📌 OUTPUT SAMPLE
+✔️ After Upload, display:
+
+Processed image with labels: e.g. car 0.61, bus 0.45, ambulance 0.90
+
+Text summary:
+
+less
+Copy
+Edit
+Lane 1: 8 vehicles (car: 5, bike: 1, ambulance: 1, bus: 1) → GREEN (60s)
+Lane 2: 4 vehicles (car: 4) → YELLOW (45s)
+Lane 3: 2 vehicles (bike: 2) → RED (0s)
+Lane 4: 7 vehicles (bus: 3, car: 4) → GREEN (30s)
+🧠 TRAFFIC LIGHT PRIORITY LOGIC (Updated)
+Calculate green/yellow/red for 4 lanes with strict prioritization:
+
+1 lane gets 60s GREEN
+
+1 lane gets 45s YELLOW
+
+1 lane gets 30s GREEN
+
+1 lane gets 0s RED
+
+No duplicates in timing or status.
+
+Ambulance lane always gets highest priority.
